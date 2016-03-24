@@ -1,4 +1,5 @@
 require 'terminal-table'
+require_relative 'path.rb'
 
 class Board
 
@@ -16,16 +17,10 @@ class Board
     end
   end
 
-  #def test;end
-
   #Will mark the position with an X
   #Made this function, so I can learn how to navigate, and point at positions using coordinates
   def mark(coordinate)
-    raise(ArgumentError, "incorrect input, Must be Array") unless coordinate.is_a? Array
-    raise(ArgumentError, "incorrect size, 2 coordinates needed") unless coordinate.size == 2
-    if coordinate[0] > @rows.last[0] || coordinate[1] > @header.last
-      raise(ArgumentError, "position does not exist")
-    end
+    check_coord(coordinate)
 
     if coordinate[0] == 1 #If their first input is 1 (1, y)
       @rows[0][coordinate[1]] = "X" #The first row down, and their second number (position on that row)
@@ -37,8 +32,26 @@ class Board
     "Marked!"
   end
 
+  def display
+    puts table()
+  end
+
   #returns a Table object, that if you #puts will print ASCII table
+  private
   def table
     Terminal::Table.new :headings => @header, :rows => @rows
+  end
+
+  #Will return true if the position exists
+  def pos_exists?(coordinate)
+    return false if coordinate[0] > @rows.last[0] || coordinate[1] > @header.last
+    true
+  end
+
+  #Will raise an error if the input is not sufficient
+  def check_coord(coordinate)
+    raise(ArgumentError, "incorrect input, Must be Array") unless coordinate.is_a? Array
+    raise(ArgumentError, "incorrect size, 2 coordinates needed") unless coordinate.size == 2
+    raise(ArgumentError, "position does not exist") unless pos_exists?(coordinate)
   end
 end
