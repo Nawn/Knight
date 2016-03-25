@@ -17,6 +17,33 @@ class Board
     end
   end
 
+  def knight_moves(depart, arrive)
+    check_coord(depart) #Check both to make sure they're valid
+    check_coord(arrive)
+    initial_position = Path.new(depart) #make an object of it
+
+    queue = [initial_position] #Create a queue of places to check
+    until queue.empty? #until we run out of things to check
+      current = queue.shift #Grab the first one, and delete it from the queue
+
+      if current.position == arrive #If it's the location we want to go to
+        return current.backtrace #Return an array of positions we jumped to get there
+      else #If this position isn't the solution
+        potentials = current.potential_moves #Create an array of places to go from here
+
+        potentials.each do |path| #Check that array
+          begin
+            check_coord(path.position) #Make sure all positions exist on the board
+          rescue ArgumentError => e #If they are not valid coordinates
+            potentials -= [path] #delete it from the list of potential positions
+          end
+        end
+
+        queue += potentials #Then add the cleaned list of potential places to jump to, to the list.
+      end
+    end
+  end
+
   #Will mark the position with an X
   #Made this function, so I can learn how to navigate, and point at positions using coordinates
   def mark(coordinate)

@@ -7,6 +7,12 @@ class Path
     @parent = parent
   end
 
+  def backtrace
+    return [@position] if @parent.nil?
+    
+    return @parent.backtrace << @position
+  end
+
   #Returns an array of Path objects that are potential moves.
   def potential_moves
     #Declare the potential array
