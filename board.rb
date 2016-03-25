@@ -46,13 +46,13 @@ class Board
 
   #Will mark the position with an X
   #Made this function, so I can learn how to navigate, and point at positions using coordinates
-  def mark(coordinate)
+  def mark(coordinate, char = "X")
     check_coord(coordinate)
 
     if coordinate[0] == 1 #If their first input is 1 (1, y)
-      @rows[0][coordinate[1]] = "X" #The first row down, and their second number (position on that row)
+      @rows[0][coordinate[1]] = char #The first row down, and their second number (position on that row)
     else
-      @rows[(coordinate[0]-1) * 2][coordinate[1]] = "X" 
+      @rows[(coordinate[0]-1) * 2][coordinate[1]] = char
       #if not, then get the row they wanted, by subtracting 1, and then multiplying by 2, 
       #because we have to account for :separators in the @rows array, then their second number(position)  
     end
